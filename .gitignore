@@ -1,52 +1,31 @@
-# Prerequisites
-*.d
+#include <stdio.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+#define buffer_size 10
 
-# Linker output
-*.ilk
-*.map
-*.exp
+typedef struct {
+} item;
 
-# Precompiled Headers
-*.gch
-*.pch
+item buffer[buffer_size];
+int in = 0;
+int out = 0;
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+int main() {
+    item next_produced;
+    while (1) {
+        // produce an item in next produced
+        while (((in + 1) % buffer_size) == out)
+            ; /*do nothing*/
+        buffer[in] = next_produced;
+        in = (in + 1) % buffer_size;
+    }
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+    item next_consumed;
+    while (1) {
+        while (in == out)
+            ; /*do nothing*/
+        next_consumed = buffer[out];
+        out = (out + 1) % buffer_size;
+        /*consume the item in next consumed*/
+    }
+    return 0;
+}
